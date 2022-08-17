@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    
+    
+    <title>文本框</title>
+    <style type="text/css">
+    body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=ejDAERyy6znwuNINAYS62XuHUztFMv3f"></script>
+</head>
+<body>
+<div id="allmap"></div>
+
+</body>
+</html>
+<script type="text/javascript">
+    // GL版命名空间为BMapGL
+    // 按住鼠标右键，修改倾斜角和角度
+    var map = new BMapGL.Map("allmap");    // 创建Map实例
+    var point = new BMapGL.Point(116.404, 39.915);
+   // 创建点坐标 ，Point描述坐标点（经纬度坐标）
+    map.centerAndZoom(point, 11);
+    // 初始化地图，设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    //map.setTrafficOn();                              // 添加交通流量图层
+    //map.setTrafficOff(); // 移除交通流量图层
+    
+    var point = new BMapGL.Point(116.404, 39.915);
+    var content = "label";
+    var label = new BMapGL.Label(content, {       // 创建文本标注
+        position: point,                          // 设置标注的地理位置
+        offset: new BMapGL.Size(10, 20)           // 设置标注的偏移量
+    })  
+    map.addOverlay(label);                        // 将标注添加到地图中
+    
+    var point = new BMapGL.Point(116.404, 39.915);
+    var content = 'label';
+    var label = new BMapGL.Label(content, {       // 创建文本标注
+        position: point,
+        offset: new BMapGL.Size(10, 20)
+    })  
+    map.addOverlay(label);                        // 将标注添加到地图中
+    label.setStyle({                              // 设置label的样式
+        color: '#000',
+        fontSize: '30px',
+        border: '2px solid #1E90FF'
+    })
+    
+    label.addEventListener("click", function(){  
+        alert("您点击了标注");  
+        var opts = {
+        	    width: 250,     // 信息窗口宽度
+        	    height: 100,    // 信息窗口高度
+        	    title: "Hello"  // 信息窗口标题
+        	}
+        	var infoWindow = new BMapGL.InfoWindow("World", opts);  // 创建信息窗口对象
+        	map.openInfoWindow(infoWindow, map.getCenter());        // 打开信息窗口
+    });
+    
+   /*  var opts = {
+    	    width: 250,     // 信息窗口宽度
+    	    height: 100,    // 信息窗口高度
+    	    title: "Hello"  // 信息窗口标题
+    	}
+    	var infoWindow = new BMapGL.InfoWindow("World", opts);  // 创建信息窗口对象
+    	map.openInfoWindow(infoWindow, map.getCenter());        // 打开信息窗口 */
+    	
+    	
+</script>

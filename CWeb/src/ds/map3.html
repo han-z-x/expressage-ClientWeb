@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+   
+    <title>比例尺控件</title>
+     <style type="text/css">
+     html{height:100%}  
+    body{height:100%;margin:0px;padding:0px}  
+    #container{height:100%}  
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=ejDAERyy6znwuNINAYS62XuHUztFMv3f"></script>
+</head>
+<body>
+    <div id="container"></div>
+</body>
+</html>
+<script type="text/javascript">
+    // GL版命名空间为BMapGL
+    // 按住鼠标右键，修改倾斜角和角度
+    var map = new BMapGL.Map("container");    // 创建Map实例
+    var ip=new BMapGL.Point(116.404, 39.915);
+    map.centerAndZoom(ip, 11);
+    // 初始化地图，设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    
+    var scaleCtrl = new BMapGL.ScaleControl();  // 添加比例尺控件
+    map.addControl(scaleCtrl);
+    var zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
+    map.addControl(zoomCtrl);
+    var cityCtrl = new BMapGL.CityListControl();  // 添加城市列表控件
+    map.addControl(cityCtrl);
+    
+    var opts = {
+    	    offset: new BMapGL.Size(150, 5)
+    	}
+    var iii=new BMapGL.ScaleControl(opts);
+    // 添加控件
+    map.addControl(iii);
+    // 移除控件
+    //map.removeControl(new BMapGL.ScaleControl(opts));
+</script>

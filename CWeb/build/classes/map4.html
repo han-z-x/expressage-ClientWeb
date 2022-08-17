@@ -1,0 +1,54 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+<!-- meta name="viewport"使页面适应移动平台 -->
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>高度点</title>
+<!--容器样式大小  --> 
+<style type="text/css"> 
+html{height:100%} 
+body{height:100%;margin:0px;padding:0px} 
+#container{height:100%} 
+</style> 
+<!-- 引用百度地图API文件 -->
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=ejDAERyy6znwuNINAYS62XuHUztFMv3f">
+</script>
+</head> 
+  
+<body> 
+<!-- 创建地图容器元素 -->
+<div id="container"></div>
+<script type="text/javascript">
+    //创建地图实例
+    var map = new BMapGL.Map("container");
+    // 创建地图实例 
+    var point = new BMapGL.Point(116.404, 39.915);
+    // 创建点坐标 ，Point描述坐标点（经纬度坐标）
+    
+    map.centerAndZoom(point, 15);
+    // 初始化地图，设置中心点坐标和地图级别 
+    // 创建带高度的点
+    var marker3d = new BMapGL.Marker3D(point, 8000, {
+        size: 50,
+        shape: BMAP_SHAPE_CIRCLE,
+        fillColor: '#454399',
+        fillOpacity: 0.6
+    });
+    // 将点添加到地图上
+    map.addOverlay(marker3d);
+    // 创建位置点
+    var pt = new BMapGL.Point(point.lng, point.lat);
+    // 创建贴图纹理Icon
+    var icon = new BMapGL.Icon(citys[i].img, new BMapGL.Size(40, 40));
+    // 创建带高度的点，这里只需要size和icon
+    var marker = new BMapGL.Marker3D(pt, 8000, {
+        size: 80,
+        icon: icon
+    });
+    // 将点添加到地图上
+    map.addOverlay(marker);
+
+</script> 
+</body> 
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    
+    
+    <title>branch-map</title>
+    <style type="text/css">
+    body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=ejDAERyy6znwuNINAYS62XuHUztFMv3f"></script>
+    
+    <!-- BOOTSTRAP -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+     <!-- JQUERY LIBS -->
+        <script type="text/javascript"  src="js/jquery.min.js"></script>
+
+        <!-- BOOTSTRAP -->
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" scr="js/jquery.js"></script>
+         <!-- jquery.cookie-->
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
+        
+</head>
+<body>
+<div id="allmap"></div>
+
+</body>
+</html>
+<script type="text/javascript">
+    // GL版命名空间为BMapGL
+    // 按住鼠标右键，修改倾斜角和角度
+    var b=$.cookie('placeID');　//cookieName:要读取的cookie名称
+    /* var b=$.cookie(unescape('placeID')); */
+    //var b="ccccc"; 
+    //alert("b:"+b);
+    
+    var map = new BMapGL.Map("allmap");    // 创建Map实例
+    
+     
+    $.ajax({
+        type:"get",
+        url:"http://localhost:8080/TestCxfHibernate/REST/Misc/getNodesList/"+b,
+        dataType:"json",                     
+        success:function(data){
+        	var con="";                   	
+                if(data=='')
+                	alert("该网点不存在");
+                else{
+                	
+                	$.each(data, function (i, item) {
+                		if(i==1){
+                			var ip = new BMapGL.Point(item.x,item.y);
+                			   // 创建点坐标 ，Point描述坐标点（经纬度坐标）
+                			    map.centerAndZoom(ip, 13);
+                			    // 初始化地图，设置中心点坐标和地图级别
+                			   
+                			    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+                			    var scaleCtrl = new BMapGL.ScaleControl();  // 添加比例尺控件
+                			    map.addControl(scaleCtrl);
+                			    var zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
+                			    map.addControl(zoomCtrl);
+                			    //创建地址解析器实例
+                			    var myGeo = new BMapGL.Geocoder();
+                		}
+                		if(item.x!='')
+                			{
+                			    var point = new BMapGL.Point(item.x, item.y);
+                               // 创建点坐标 ，Point描述坐标点（经纬度坐标）
+ 
+                                var marker = new BMapGL.Marker(point);        // 创建标注   
+                                map.addOverlay(marker); 
+                                marker.addEventListener("click", function(){  
+                                    var opts = {
+                                    	    width: 250,     // 信息窗口宽度
+                                    	    height: 50,    // 信息窗口高度
+                                    	    title: ""  // 信息窗口标题
+                                    	}
+                                    	var infoWindow = new BMapGL.InfoWindow(item.nodeName, opts);  // 创建信息窗口对象
+                                    	map.openInfoWindow(infoWindow, point);        // 打开信息窗口
+                                });
+                			}
+                         
+    				})                	
+                }
+        },
+        error:function(){
+            alert("该网点不存在");
+        }
+    });
+    
+</script>

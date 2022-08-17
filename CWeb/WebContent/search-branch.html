@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<!-- 搜索网点 -->
+    <head>
+        <title>快递 有速度有温度</title>
+        <!-- META -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="快递 有速度有温度">
+        <meta name="author" content="Craftdzine">
+
+        <!-- FAVICON --><!-- icon图标导入 -->
+        <link rel="shortcut icon" href="favicon.ico">
+
+        <!-- BOOTSTRAP -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <!-- FONT AWESOME -->
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <!--  STYLE -->
+        <link rel="stylesheet" href="css/style.css">
+        <!-- HEADER 1 -->
+        <link rel="stylesheet" href="css/header-1.css">
+        <!-- FOOTER 1 -->
+        <link rel="stylesheet" href="css/footer-1.css">
+        <!-- ANIMATE -->
+        <link rel="stylesheet" href="css/animate.css">
+        <!-- MAGNIFIC POPUP -->
+        <link rel="stylesheet" href="css/magnific-popup.css">
+        <!-- FLEXSLIDER -->
+        <link rel="stylesheet" href="plugins/FlexSlider/jquery.flexslider.css">
+        <!--  OWL CAROUSEL -->
+        <link rel="stylesheet" href="plugins/owl-carousel/owl.carousel.css">
+        <!-- OWL CAROUSEL THEME -->
+        <link rel="stylesheet" href="plugins/owl-carousel/owl.theme.css">
+        <!-- CUBE PORTFOLIO -->
+        <link rel="stylesheet" type="text/css" href="css/cubeportfolio.min.css">
+        
+        
+         <!-- JQUERY LIBS -->
+        <script type="text/javascript"  src="js/jquery.min.js"></script>
+
+        <!-- BOOTSTRAP -->
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" scr="js/jquery.js"></script>
+         <!-- jquery.cookie-->
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
+        
+        <!-- OWL CAROUSEL -->
+        <script type="text/javascript" src="plugins/owl-carousel/owl.carousel.min.js"></script>
+        <!-- COUNTER UP -->
+        <script type="text/javascript" src="js/jquery.counterup.min.js"></script>
+        <!-- WAYPOINTS -->
+        <script type="text/javascript" src="js/waypoints.min.js"></script>
+        <!-- FLEXSLIDER -->
+        <script type="text/javascript" src="plugins/FlexSlider/jquery.flexslider-min.js"></script>
+        <!-- MAGNIFIC POPUP-->
+        <script type="text/javascript" src="js/jquery.magnific-popup.min.js"></script>
+        <!-- MAGNIFIC POPUP  -->
+        <script type="text/javascript" src="js/magnific-popup.min.js"></script>
+        <!-- CUBE PORTFOLIO -->
+        <script type="text/javascript" src="js/jquery.cubeportfolio.min.js"></script>
+        <!-- CUBE PORTFOLIO -->
+        <script type="text/javascript" src="js/cubeportfolio/portfolio-masonry-4col.js"></script>
+        <!-- CUBE TESTIMONIALS -->
+        <script type="text/javascript" src="js/cubeportfolio/testimonials.js"></script>
+        <!-- CUBE TEAM -->
+        <script type="text/javascript" src="js/cubeportfolio/team.js"></script>
+        <!-- CUBE BLOG -->
+        <script type="text/javascript" src="js/cubeportfolio/blog-grid-3col.js"></script>
+        <!-- CUSTOM-->
+        <script type="text/javascript" src="js/custom.js"></script>
+        
+        <script type="text/javascript" src="js/search.js"></script>
+        
+        <script type="text/javascript">
+        
+        $(function(){
+        	
+        	$("#nodeName").on("click",function(){
+                var nodeName = $("#town").val();
+                var node=nodeName+"00";
+                
+                /* var c=placeid();
+                alert("c:"+c); */
+                var d=$("#pro option:selected").text()+$("#city option:selected").text()+$("#town option:selected").text();
+                //alert("d:"+d);
+                //placeid();
+                //写入设置Cookie值
+        		//$.cookie(cookieName,cookieValue);cookieName:要设置的cookie名称，cookieValue表示相对应的值。
+        		//读取cookie值
+        		//$.cookie(cookieName)　cookieName:要读取的cookie名称
+        		//删除cookie的值
+        		//$.cookie("placeName");
+        		var c=nodeName;
+        		$.cookie('placeID',null,{path:'/'});//删除cookie中mapID的值 */
+        		//将PackageID的值保存1天在cookie中的mapID中
+        		$.cookie('placeID',c, { expires: 7, path: '/', secure: false });
+        		//$.cookie('placeName',escape('d'),{path:'/',expires:1});
+        		var a=$.cookie('placeID');　//cookieName:要读取的cookie名称
+        		//alert("a:"+a);
+        		//alert("c:"+c);
+        		
+        		/* $('#iframe').attr('src', $('#iframe').attr('src'));//刷新地图，iframe可传参 */
+        		var str=" ";
+                $("#table").html(str);
+                $.ajax({
+                    type:"get",
+                    url:"http://localhost:8080/TestCxfHibernate/REST/Misc/getNodesList/"+nodeName,
+                    dataType:"json",                     
+                    success:function(data){
+                    	var con="";                   	
+        	                if(data=='')
+        	                	alert("该网点不存在");
+        	                else{
+        	                	
+        	                	$.each(data, function (i, item) {
+        	                		con="<tr><td>" + item.ID + "</td><td>" + item.nodeName +  "</td><td>" + item.telCode +"</td></tr>";
+                                    $("#table").append(con);
+        	    					/* str = "<option value=" + item.Code + ">" + item.Name + "</option>";
+        	    					$("#city").append(str); */
+        	    				})
+                              /* con="<tr><td>" + data.ID + "</td><td>" + data.nodeName +  "</td><td>" + data.telCode +"</td></tr>";
+                              $("#table").html(con); */
+        	                	//con = "<tr><td>" + data.ID + "</td><td>" + data.nodeName +  "</td><td>" + data.telCode +"</td></tr>"	                	
+        	                }
+        	                $('#iframe').attr('src', $('#iframe').attr('src'));
+                    },
+                    error:function(){
+                        alert("该网点不存在");
+                    }
+                });
+                
+            });
+        	
+        	
+        });
+        function placeid(){
+        	var d=$("#pro option:selected").text()+$("#city option:selected").text()+$("#town option:selected").text();
+            //alert("d:"+d);
+            // $.cookie('placeName',null,{path:'/'});//删除cookie中mapID的值 */
+    		//将PackageID的值保存1天在cookie中的mapID中
+    		 //$.cookie('placeName',d,{path:'/',expires:1});
+    		//var a=$.cookie('placeName');　//cookieName:要读取的cookie名称
+    		//alert("a:"+a);
+    		return d;
+        }
+        </script>
+        
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ejDAERyy6znwuNINAYS62XuHUztFMv3f"></script>
+	
+        <!-- WEB FONTS -->
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+        <link href="http://fonts.googleapis.com/css?family=Raleway:500,800" rel="stylesheet" property="stylesheet" type="text/css" media="all" />
+    </head>
+    <body>
+         
+
+
+        <!-- Site Wraper -->
+        <div class="wrapper">
+
+            <!-- Start Header-->
+            <div class="header sticky-header">
+                <!-- Navbar -->
+                <div class="navbar navbar-default mega-menu" role="navigation">
+                    <div class="container">
+                        <!-- Brand and toggle mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="fa fa-bars"></span>
+                            </button>
+                            <a class="navbar-brand" href="index.html">
+                                <img id="logo-header" src="img/index-logo.png" alt="Logo" /><!--导航栏左上角CLASSIFY名字-->
+                            </a>
+                        </div>
+
+                        <!-- 导航栏列表 -->
+                        <!-- Nav links-->
+                        <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+                            <ul class="nav navbar-nav">
+                                <!-- Home -->
+                                <!-- Pages -->    <!-- HOME -->
+                                <!-- 导航栏HOME标签部分 -->
+                                <li><a href="index.html">首页</a></li>
+                                <!-- End Pages -->
+
+                                <!-- Pages -->   <!--  PAGES  -->
+                                <!-- 导航栏PAGES -->
+                                <li><a href="search-branch.html">网点查询</a></li>
+                                <!-- End Pages -->
+
+                                <!-- Pages -->   <!-- PORTFOLIO -->
+                                <li><a href="search-scope.html">配送范围查询</a></li>
+                                <!-- End Pages -->
+
+                                <!-- Pages -->   <!-- ******************BLOG ************************-->
+                                <li><a href="search-package.html">快递查询</a></li>
+                                <!-- End Pages -->
+
+                                <!-- Shortcodes --><!-- *************************关于我们************** -->
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                        关于我们
+                                    </a>
+                                    <ul class="dropdown-menu ">
+                                        <li><a href="about-us.html">公司资讯</a></li>
+                                        <li><a href="connection.html">联系我们</a></li><!-- HOME下OnePage列表 -->
+                                    </ul>
+                                </li>
+                                <!-- End Shortcodes -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Navbar -->
+            </div>
+            <!-- End Header -->
+            <!-- *********************************导航栏结束******************************** -->
+           
+           
+           
+            <!-- Start Breadcrumb -->
+            <div class="page-heading">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <h1 class="title"><span>网点查询</span></h1>
+                            <div class="breadcrumb">
+                                <a href="index.html">首页</a>
+                                <span class="delimeter">/</span> 
+                                <span class="current">网点查询</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Breadcrumb -->
+           
+           
+           <!--网点查询显示 -->
+            <!--START THEME-IMAGE BLOCK-->
+            <section class="home-main-contant-style bg-white">
+                <div class="container">
+                    
+                    <div class="form-group">
+                    <div style="margin-bottom: 10px;">
+                        <label for="addplace" style="font-size: 20px;font-weight: 700; color:#ccc;" >地址：选择（省/市/区）</label>
+                    </div>
+                    
+                    <select name='province' style="width: 189px; margin-bottom: 20px;" class="col-md-4 form-control"  id="pro">
+                        <option value="">--请选择--</option>
+                    </select>
+                    <select name='city' style="width: 189px;" class="col-md-4 form-control" id="city">
+                        <option value="">--请选择--</option>
+                    </select>
+                    <select name='area' style="width: 189px;" class="col-md-4 form-control" id="town">
+                        <option value="">--请选择--</option>
+                    </select>
+                    <button id="nodeName" class="btn">  搜索网点  </button>
+                    
+                    <table class="table">
+                        <tr>
+                        <th>网点号</th>
+                        <th>网点名称</th>
+                        <th>电话</th>
+                        </tr>
+                        <tbody id="table" >
+                            
+                        </tbody>
+                    </table>
+                    </div>
+                    <hr>
+                    <!--START Map-->
+              <!--  <section class="home-main-contant-style bg-white"> -->
+                    <div class="container">
+                        <div class="cd-home-title">
+                            <h2>位置显示</h2> 
+                       <!-- <p>公司的地图显示</p>-->
+                        </div>
+                        <div class="theme-image">
+                            <!-- <iframe src="WEB-INF/map.html" width="100%" height="400px" id="iframe"></iframe>-->
+                            <iframe src="branch-map.html" width="100%" height="400px" id="iframe"></iframe>
+                        </div>
+                    </div>
+<!--             </section> 
+ -->            <!--END Map-->
+                     
+                     <!-- 网点表格位置 -->
+                    
+                </div>
+            </section>
+            <!--END THEME-IMAGE BLOCK-->
+           
+            
+            
+            <!--START PRE-BLCOK-->
+            <section class="bg-block-style">
+                <a href="#">
+                     <img id="logo-header" src="img/logo2.png" alt="Logo" /><!--导航栏左上角CLASSIFY名字-->
+                </a>
+            </section>
+            <!--START PRE-BLCOK-->
+            
+           
+
+             <!-- START FOOTER -->
+            <footer class="footer">
+                <div class="container">
+                    <div class="row">
+                        <!-- CATEGORIES WIDGET -->
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        
+                            <div class="widget">
+                            <a href="about-us.html">
+                                <h6 class="text-uppercase bottom-line" >关于我们</h6>
+                            </a>
+                                <div class="footer-logo mb15"><img src="img/index-logo.png" alt="Logo" class="img-responsive" /></div>
+                                <p>极速快递 安全有保障 有速度 有温度</p>
+                            </div>
+                       
+                        </div>
+                        <!-- CATEGORIES WIDGET -->
+
+                        <!-- CATEGORIES WIDGET -->
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        
+                            <div class="widget">
+                            <a href="connection.html">
+                                <h6 class="montserrat text-uppercase bottom-line">联系我们</h6>
+                            </a>
+                                <address>
+                                    <p>河南省  郑州市  科学大道  100号</p><br>
+                                    <p>电话: (+123) 12-345-6789</p>
+                                    <p>微信: (+123) 12-345-6789</p>
+                                    <p>邮箱: craftdesignstaff@gmail.com</a></p>
+                                </address>
+                            </div>
+                        </div>
+                        <!-- END CATEGORIES WIDGET -->
+                        
+                    </div>
+
+                    <!-- CONTACT WIDGET -->
+                    <div class="copyright">
+                        <div class="text-center">
+                            <p>已通过ISO27001:2013 信息安全认证                 沪ICP备13044869号-2</p>
+                            <p>极速版权所有 极速快递股份有限公司©版权所有</p>
+                        </div>
+                    </div>
+
+                </div>
+            </footer>
+            <!-- END FOOTER-->     
+    
+
+        </div>
+
+        
+
+
+
+
+    <!--[if lt IE 9]>
+        <script src="respond.js"></script>
+        <script src="html5shiv.js"></script>
+        <![endif]-->
+    </body>
+</html>
